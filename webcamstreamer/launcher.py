@@ -2,6 +2,24 @@
 
 from __future__ import print_function
 
+# defaults = """[server]
+# host=0.0.0.0
+# port=5000
+
+# [dashboard]
+# title=Webcam Streamer
+
+# [cameras]
+# use_mock=false
+# width=320
+# height=240
+# fps=10
+
+# [camera_names]
+# default=Camera #{id}
+# """
+
+
 import os
 import subprocess
 try:
@@ -39,7 +57,7 @@ def main():
     config = configparser.ConfigParser()
 
     from streamer.defaults import defaults
-    defaults_buf = StringIO.StringIO(defaults)
+    defaults_buf = StringIO(defaults)
     try:
         config.read_file(defaults_buf)
     except AttributeError:

@@ -2,11 +2,32 @@
 
 from __future__ import unicode_literals
 
+defaults = """[server]
+host=0.0.0.0
+port=5000
+
+[dashboard]
+title=Webcam Streamer
+
+[cameras]
+use_mock=false
+width=320
+height=240
+fps=10
+
+[camera_names]
+default=Camera #{id}
+"""
+
+
 import time
 import base64
 import os
 import logging
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 try:
     import ConfigParser as configparser
 except ImportError:
@@ -16,12 +37,12 @@ from gevent import monkey
 monkey.patch_all()
 
 from flask import Flask, render_template, Response, request
-from flask.ext.socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit
 
 config = configparser.ConfigParser()
 
-from defaults import defaults
-defaults_buf = StringIO.StringIO(defaults)
+# from defaults import defaults
+defaults_buf = StringIO(defaults)
 try:
     config.read_file(defaults_buf)
 except AttributeError:
